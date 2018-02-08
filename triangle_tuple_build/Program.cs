@@ -11,7 +11,7 @@ namespace TriangleTupleBuild
         static void Main()
         {
             // Create four-item tuple.
-            int[] columns = new int[] { 0, 1, 3, 4, 5, 6};
+            int[] columns = new int[] { 0, 1, 2, 3, 4, 5, 6};
             int x = 0;
             int y = 0;
             string[] rowLetters = Enum.GetNames(typeof(Rows));
@@ -30,36 +30,38 @@ namespace TriangleTupleBuild
                             //row + column.ToString(),
                              new int[] { x, y },
                              new int[] { x, y += 10 },
-                             new int[] { x += 10, y });
+                             new int[] { x += 10, y }
+                            );
                         M(startingTriangle);
                         columnNumber++;
                     }
                     else if (column % 2 != 0)
                     {
-                        var oddTriangle = new Tuple<string, int[], int[], int[]>(
+                        var oddTriangleColumn = new Tuple<string, int[], int[], int[]>(
                             row + columnNumber.ToString(),
                             new int[] { x -= 10, y -= 10 },
                             new int[] { x += 10, y },
                             new int[] { x, y += 10 }
                             );
-                        M(oddTriangle);
+                        M(oddTriangleColumn);
                         columnNumber++;
                     }
-                    else
+                    else if (column % 2 == 0)
                     {
-                        var evenTriangle = new Tuple<string, int[], int[], int[]>(
+                        var evenTriangleColumn = new Tuple<string, int[], int[], int[]>(
                              row + columnNumber.ToString(),
-                            new int[] { x, y -= 10 },
+                            new int[] { x, y -=10 },
                             new int[] { x, y += 10 },
-                            new int[] { x += 10, y });
+                            new int[] { x += 10, y }
+                        );
                         // Pass tuple as argument.
-                        M(evenTriangle);
+                        M(evenTriangleColumn);
                         columnNumber++;
                     }
                 }
                 x = 0;
                 y = 0 + ((rowNumber+=1) * 10);
-                columnNumber = 0;
+                columnNumber = 1;
             }
         }
 
