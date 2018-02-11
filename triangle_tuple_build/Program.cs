@@ -1,15 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TriangleTupleBuild
 {
-
+   
     class Program
     {
-        enum Rows { A, B, C, D, E, F };
 
-        static void Main()
+        public static void Main(string[] args)
         {
+            Console.Write("Enter a Key such as B4 ");
+            AllTriangles.userKey = Convert.ToString(Console.ReadLine());
+            AllTriangles.userCoords = new int[6];
+
+            for (int i = 0; i < 6; i++)
+            {
+                Console.Write("Enter coordinates values ");
+                AllTriangles.userCoords[i]= Convert.ToInt32(Console.ReadLine());
+            } 
+           
+            AllTriangles grid = new AllTriangles();
+            grid.AllTrianglesGet();
+
+        }
+    }
+
+
+    public class AllTriangles
+    {
+        enum Rows { A, B, C, D, E, F };
+        public static string userKey { get; set; } 
+        public static int[] userCoords { get; set; }
+
+        public object AllTrianglesGet()
+        {
+
             int[] columns = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
             int x = 0;
             int y = 0;
@@ -25,10 +51,8 @@ namespace TriangleTupleBuild
                 {
                     if (column == 0)
                     {
-                        //columns[column +1] += column;
                         var startingTriangle = new Tuple<string, int[], int[], int[]>(
                             row + columnNumber.ToString(),
-                             //row + column.ToString(),
                              new int[] { x, y },
                              new int[] { x, y += 10 },
                              new int[] { x += 10, y }
@@ -57,7 +81,6 @@ namespace TriangleTupleBuild
                         );
                         // Pass tuple as argument.
                         M(evenTriangleColumn);
-                        //addTriangle(evenTriangleColumn);
                         columnNumber++;
                     }
                 }
@@ -65,9 +88,10 @@ namespace TriangleTupleBuild
                 y = 0 + ((rowNumber += 1) * 10);
                 columnNumber = 1;
             }
+            return x;
         }
 
-        public static void M(Tuple<string, int[], int[], int[]> tuple)
+        private static object M(Tuple<string, int[], int[], int[]> tuple)
         {
             List<int> Coords1 = new List<int>();
             List<int> Coords2 = new List<int>();
@@ -89,40 +113,40 @@ namespace TriangleTupleBuild
             }
 
 
-            //Added all tuple items to Dictionary, now need to be able to search through dictionary for key or coordinates user types in
-            Dictionary<string, List<int>> Dict = new Dictionary<string, List<int>>
+            //Added tuple items to Dictionary
+            Dictionary<string, List<int>> TriangleDict = new Dictionary<string, List<int>>();
+
+            TriangleDict.Add(tuple.Item1, new List<int> {
+                  (int)Coords1[0],
+                  (int)Coords1[1],
+                  (int)Coords2[0],
+                  (int)Coords2[1],
+                  (int)Coords3[0],
+                  (int)Coords3[1]
+            });
+
+
+            foreach (KeyValuePair<string, List<int>> pair in TriangleDict)
             {
+                // set findByKey and findByCoords to boolean value 
+
+                if (TriangleDict.ContainsKey(userKey) == true)
+                    Console.WriteLine($"Triangle ID: {tuple.Item1} Coordinates: {Coords1[0]} {Coords1[1]}, {Coords2[0]} {Coords2[1]}, {Coords3[0]} {Coords3[1]}  ");
+
+                if (tuple.Item2[0].Equals(userCoords[0]) && tuple.Item2[1].Equals(userCoords[1]) && tuple.Item3[0].Equals(userCoords[2]) && tuple.Item3[1].Equals(userCoords[3]) && tuple.Item4[0].Equals(userCoords[4]) && tuple.Item4[1].Equals(userCoords[5]))
                 {
-                    tuple.Item1,
-                    new List<int> 
-                    {
-                      (int)Coords1[0],
-                      (int)Coords1[1],
-                      (int)Coords2[0],
-                      (int)Coords2[1],
-                      (int)Coords3[0],
-                      (int)Coords3[1] 
-                    }
+                    Console.WriteLine($"Triangle ID: {tuple.Item1} Coordinates: {Coords1[0]} {Coords1[1]}, {Coords2[0]} {Coords2[1]}, {Coords3[0]} {Coords3[1]}  ");
+
                 }
-            };
-            Console.WriteLine($"Triangle ID: {tuple.Item1} Coordinates: {Coords1[0]} {Coords1[1]}, {Coords2[0]} {Coords2[1]}, {Coords3[0]} {Coords3[1]}  ");
+            }
+            return TriangleDict;
 
-        }
-
-        //Need to search through tuple by ID to return coordinates
-        public static void FindTriangleCoordinatesByID()
-        {
-            Console.WriteLine("Find Triangle by Coordinates type C, Find Triangle by Name type N");
-            Console.ReadLine();
-        }
-
-        //Need to search through tuple by coordinates to find ID
-        public static void FindTriangleIDByCoordinates(List<int> Coords1, List<int> Coords2, List<int> Coords3)
-        {
 
         }
     }
 }
+
+
 
 
 
