@@ -22,7 +22,7 @@ namespace TriangleTupleBuild
             } 
            
             grid.AllTrianglesGet();
-
+            Console.ReadLine();
         }
     }
 
